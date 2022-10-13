@@ -19,6 +19,7 @@
     <ProjectReference Include="..\ClassLibrary.Common\ClassLibrary.Common.csproj" />
     <ProjectReference Include="..\ClassLibrary.Core\ClassLibrary.Core.csproj" />
     <ProjectReference Include="..\ClassLibrary.Models\ClassLibrary.Models.csproj" />
+    <ProjectReference Include="..\ClassLibrary.MyAttributes\ClassLibrary.MyAttributes.csproj" />
     <ProjectReference Include="..\ClassLibrary.ViewModels\ClassLibrary.ViewModels.csproj" />
   </ItemGroup>
 

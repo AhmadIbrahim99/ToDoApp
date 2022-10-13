@@ -20,6 +20,8 @@ using ClassLibrary.Core.Mapper;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
+using ClassLibrary.Core.Managers;
+using ClassLibrary.Core.Managers.Interfaces;
 
 namespace ToDoApp.API
 {
@@ -44,8 +46,11 @@ namespace ToDoApp.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ToDoDBContext>();
-
             services.AddLogging();
+            services.AddScoped<IUserManager, UserManager>();
+            services.AddScoped<ICommonManager, CommonManager>();
+            services.AddScoped<IRoleManager, RoleManager>();
+            services.AddScoped<IToDoManager, ToDoManager>();
             services.AddSingleton(singltonMapper => _mapperConfiguration.CreateMapper());
             services.AddControllers();
 
