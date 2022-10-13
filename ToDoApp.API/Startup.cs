@@ -17,6 +17,9 @@ using System.Threading.Tasks;
 using ClassLibrary.Common.Extenstions;
 using AutoMapper;
 using ClassLibrary.Core.Mapper;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
 
 namespace ToDoApp.API
 {
@@ -41,13 +44,66 @@ namespace ToDoApp.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ToDoDBContext>();
+
             services.AddLogging();
             services.AddSingleton(singltonMapper => _mapperConfiguration.CreateMapper());
             services.AddControllers();
+
+            #region AddSwaggerGen
             services.AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoApp.API", Version = "v1" });
+                    c.AddSecurityDefinition("Bearer",
+        new OpenApiSecurityScheme
+        {
+            Description = "Plz insert Bearer JWT token, Example: 'Bearer{token}'",
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+        }
+        );
+                    c.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoApp.API", Version = "v1" });
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
             });
+                }); 
+            #endregion
+
+            #region AddAuthentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                    .AddJwtBearer(options =>
+                    {
+                        options.TokenValidationParameters =
+                        new TokenValidationParameters
+                        {
+                            ValidateIssuer = true,
+                            ValidateAudience = true,
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
+                            ClockSkew = TimeSpan.Zero,
+                            ValidIssuer = Configuration["Jwt:Issuer"], //test.com
+                            ValidAudience = Configuration["Jwt:Issuer"],
+                            IssuerSigningKey = new SymmetricSecurityKey(
+                                Encoding.
+                                UTF8.
+                                GetBytes(Configuration["Jwt:Key"])
+                                )
+                        };
+                    });
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +130,8 @@ namespace ToDoApp.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

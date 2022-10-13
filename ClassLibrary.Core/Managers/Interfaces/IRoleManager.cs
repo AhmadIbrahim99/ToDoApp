@@ -8,5 +8,6 @@ namespace ClassLibrary.Core.Managers.Interfaces
 {
     public interface IRoleManager : IManager
     {
+        bool CheckAccess(int Id, List<string> Permissions);
     }
 }
