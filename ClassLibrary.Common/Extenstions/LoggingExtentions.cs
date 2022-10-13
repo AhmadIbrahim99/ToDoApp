@@ -3,9 +3,9 @@ using Serilog.Events;
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using WebApplication5.Exceptions.Logging;
+using ClassLibrary.Common.Exceptions.Logging;
 
-namespace WebApplication5.Extenstions
+namespace ClassLibrary.Common.Extenstions
 {
     public static class LoggingExtentions
     {

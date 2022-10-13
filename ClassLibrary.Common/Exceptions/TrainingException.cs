@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApplication5.Exceptions
+namespace ClassLibrary.Common.Exceptions
 {
     public class TrainingException : Exception
     {

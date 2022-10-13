@@ -1,7 +1,7 @@
 ﻿using Serilog.Events;
 using System;
 
-namespace WebApplication5.Exceptions.Logging
+namespace ClassLibrary.Common.Exceptions.Logging
 {
     public class LogMessage
     {

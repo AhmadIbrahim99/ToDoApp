@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApplication5.Exceptions;
 
-namespace WebApplication5.Exceptions
+namespace ClassLibrary.Common.Exceptions
 {
     public class UnauthorizedResultException : TrainingException
     {

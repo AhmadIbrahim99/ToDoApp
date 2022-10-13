@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using WebApplication5.Exceptions;
+using ClassLibrary.Common.Exceptions;
 
-namespace WebApplication5.Helper
+namespace ClassLibrary.Common.Helper
 {
     public class FileHelper
     {

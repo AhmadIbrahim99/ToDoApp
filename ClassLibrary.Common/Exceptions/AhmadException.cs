@@ -1,4 +1,4 @@
-﻿namespace WebApplication5.Exceptions
+﻿namespace ClassLibrary.Common.Exceptions
 {
     public class AhmadException : TrainingException
     {

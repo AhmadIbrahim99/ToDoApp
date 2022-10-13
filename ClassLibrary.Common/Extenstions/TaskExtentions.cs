@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace WebApplication5.Extenstions
+namespace ClassLibrary.Common.Extenstions
 {
     public static class TaskExtentions
     {
