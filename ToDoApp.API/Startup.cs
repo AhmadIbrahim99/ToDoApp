@@ -14,15 +14,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApplication5.Extenstions;
+using ClassLibrary.Common.Extenstions;
+using AutoMapper;
+using ClassLibrary.Core.Mapper;
 
 namespace ToDoApp.API
 {
     public class Startup
     {
+        private MapperConfiguration _mapperConfiguration { get; set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            #region MapperConfiguration
+            Configuration = configuration;
+            _mapperConfiguration = new MapperConfiguration(
+                cfg =>
+                cfg.AddProfile(new Mapping())
+                );
+            #endregion
         }
 
         public IConfiguration Configuration { get; }
@@ -32,6 +42,7 @@ namespace ToDoApp.API
         {
             services.AddDbContext<ToDoDBContext>();
             services.AddLogging();
+            services.AddSingleton(singltonMapper => _mapperConfiguration.CreateMapper());
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
