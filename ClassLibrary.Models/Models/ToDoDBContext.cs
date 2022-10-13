@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace ToDoApp.API.Models
+namespace ClassLibrary.Models
 {
     public partial class ToDoDBContext : DbContext
     {

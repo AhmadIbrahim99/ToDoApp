@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace ToDoApp.API.Models
+namespace ClassLibrary.Models
 {
     public partial class ToDo
     {
