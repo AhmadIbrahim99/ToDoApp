@@ -21,10 +21,9 @@ namespace ToDoApp.API.Controllers
         [HttpGet("api/todo/{id}")]
         public IActionResult GetBlog(int id) => Ok(_manager.GetToDo(id));
 
-        [HttpPut("api/todo/{id}")]
-        [ValidateAntiForgeryToken]
+        [HttpPut("api/todo")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IActionResult PutBlog(ToDoRequest request) => Ok(_manager.PutToDo(LoggedInUser, request));
+        public IActionResult PutBlog([FromBody]ToDoRequest request) => Ok(_manager.PutToDo(LoggedInUser, request));
 
         [HttpDelete("api/blog/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

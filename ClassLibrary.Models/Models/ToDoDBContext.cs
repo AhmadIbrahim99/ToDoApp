@@ -8,6 +8,7 @@ namespace ClassLibrary.Models
 {
     public partial class ToDoDBContext : DbContext
     {
+        public bool IgnoreFilter { get; set; }
         public ToDoDBContext(DbContextOptions<ToDoDBContext> options)
             : base(options)
         {
@@ -69,7 +70,6 @@ namespace ClassLibrary.Models
 
             modelBuilder.Entity<ToDo>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("ToDo");
 
@@ -97,14 +97,12 @@ namespace ClassLibrary.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-
                 entity.HasOne(d => d.User)
-                    .WithMany()
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .WithMany(d=> d.ToDos)
                     .HasConstraintName("FK__ToDo__UserId__276EDEB3");
             });
-
+            modelBuilder.Entity<ApplicationUser>().HasQueryFilter(x=> !x.Archived || IgnoreFilter);
+            modelBuilder.Entity<ToDo>().HasQueryFilter(x=> (!x.IsRead && !x.Archived) || IgnoreFilter);
             OnModelCreatingPartial(modelBuilder);
         }
 

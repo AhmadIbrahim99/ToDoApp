@@ -35,11 +35,16 @@ namespace ClassLibrary.Core.Managers
             _context.SaveChanges();
         }
 
-        public ToDoVM GetToDo(int id) => _map.Map<ToDoVM>
-            (_context.ToDos.
-                Include("User")// ==  a=>a.User
-                .FirstOrDefault(b => b.Id == id) ??
-                throw new AhmadException(403, "Invalid ToDo id received"));
+        public ToDoVM GetToDo(int id)
+        {
+            var data = _context.ToDos.
+                 Include("User")// ==  a=>a.User
+                 .FirstOrDefault(b => b.Id == id) ??
+                 throw new AhmadException(403, "Invalid ToDo id received");
+            data.IsRead = true;
+            _context.SaveChanges();
+            return _map.Map<ToDoVM>(data);
+        }
 
         public ToDoResponse GetToDos(int page = 1, int pageSize = 10, string searchText = "", string sortColumn = "", string sortDirection = "ascending")
         {
@@ -100,25 +105,27 @@ namespace ClassLibrary.Core.Managers
                         Title = toDoRequest.Title,
                         ContentToDo = toDoRequest.ContentToDo,
                         UserId = currentUser.Id,
+                        UserIdTask = currentUser.Id
                     }
                     ).Entity;
 
-                if (currentUser.IsAdmin)
+                if (currentUser.IsAdmin && toDoRequest.UserIdTask != currentUser.Id && toDoRequest.UserIdTask > 0)
                 {
                     _context.ToDos.Add(new ToDo
                     {
                         Title = toDoRequest.Title,
                         ContentToDo = toDoRequest.ContentToDo,
-                        UserId = toDoRequest.Id,
+                        UserId = currentUser.Id,
+                        UserIdTask = toDoRequest.UserIdTask
                     });
                 }
             }
             var url = "";
-            if (!string.IsNullOrWhiteSpace(toDoRequest.Iamge)) url = FileHelper.SaveImage(toDoRequest.Iamge, "profileimage");
+            if (!string.IsNullOrWhiteSpace(toDoRequest.Iamge)) url = FileHelper.SaveImage(toDoRequest.Iamge, "todoimage");
 
-            var baseUrl = "https://localhost:5001/";
+            var baseUrl = "https://localhost:44322/";
 
-            if (!string.IsNullOrWhiteSpace(url)) toDo.ImageString = @$"{baseUrl}/api/v1/user/filretrive/profilepic?filename={url}";
+            if (!string.IsNullOrWhiteSpace(url)) toDo.ImageString = @$"{baseUrl}/api/v1/user/filretrive/todopic?filename={url}";
 
             _context.SaveChanges();
 

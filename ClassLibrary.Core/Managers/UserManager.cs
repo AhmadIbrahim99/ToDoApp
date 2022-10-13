@@ -87,9 +87,9 @@ namespace ClassLibrary.Core.Managers
             var user = _context.ApplicationUsers.FirstOrDefault(x => x.Id == currentUser.Id)
                 ?? throw new AhmadException(400, "User Not Found");
             var url = "";
-            if (!string.IsNullOrWhiteSpace(request.ImageString)) url = FileHelper.SaveImage(request.ImageString, "profileimage");
+            if (!string.IsNullOrWhiteSpace(request.Image)) url = FileHelper.SaveImage(request.Image, "profileimage1");
 
-            var baseUrl = "https://localhost:5001/";
+            var baseUrl = "https://localhost:44322/";
 
             if (!string.IsNullOrWhiteSpace(url)) user.ImageString = @$"{baseUrl}/api/v1/user/filretrive/profilepic?filename={url}";
 

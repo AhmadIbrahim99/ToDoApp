@@ -11,8 +11,8 @@ namespace ClassLibrary.Models
         public string Title { get; set; }
         public string ImageString { get; set; } = "";
         public string ContentToDo { get; set; }
-        public bool IsRead { get; set; }
-        public bool Archived { get; set; }
+        public bool IsRead { get; set; } = false;
+        public bool Archived { get; set; } = false;
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; } = DateTime.Now;
         public DateTime? DeletedAt { get; set; }

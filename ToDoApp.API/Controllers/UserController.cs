@@ -15,7 +15,7 @@ namespace ToDoApp.API.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         [MyAuthorization("Admin")]
         public IActionResult Get() => Ok(LoggedInUser) ?? Ok(_userManager.GetAll());
 
@@ -38,7 +38,7 @@ namespace ToDoApp.API.Controllers
 
         [HttpPut("Update")]
         [Authorize]
-        public IActionResult Update(UserVM request) => Ok(_userManager.Update(request, LoggedInUser));
+        public IActionResult Update([FromBody] UserVM request) => Ok(_userManager.Update(request, LoggedInUser));
 
 
     }
