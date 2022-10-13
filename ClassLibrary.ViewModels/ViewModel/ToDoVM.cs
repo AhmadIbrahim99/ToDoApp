@@ -9,6 +9,7 @@ namespace ClassLibrary.ViewModels.ViewModel
 {
     public class ToDoVM
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string ImageString { get; set; }
         public bool IsRead { get; set; }

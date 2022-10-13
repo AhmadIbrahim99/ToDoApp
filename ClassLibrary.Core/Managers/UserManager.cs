@@ -89,7 +89,7 @@ namespace ClassLibrary.Core.Managers
             var url = "";
             if (!string.IsNullOrWhiteSpace(request.ImageString)) url = FileHelper.SaveImage(request.ImageString, "profileimage");
 
-            var baseUrl = "https://localhost:44394/";
+            var baseUrl = "https://localhost:5001/";
 
             if (!string.IsNullOrWhiteSpace(url)) user.ImageString = @$"{baseUrl}/api/v1/user/filretrive/profilepic?filename={url}";
 

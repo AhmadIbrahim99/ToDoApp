@@ -9,7 +9,7 @@ namespace ClassLibrary.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string ImageString { get; set; }
+        public string ImageString { get; set; } = "";
         public string ContentToDo { get; set; }
         public bool IsRead { get; set; }
         public bool Archived { get; set; }

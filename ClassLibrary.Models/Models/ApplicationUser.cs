@@ -23,7 +23,7 @@ namespace ClassLibrary.Models
         public DateTime? DeletedAt { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string ImageString { get; set; }
+        public string ImageString { get; set; } = "";
         public virtual ICollection<ToDo> ToDos { get; set; }
     }
 }
