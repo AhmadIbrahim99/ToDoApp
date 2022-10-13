@@ -1,29 +1,24 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-#nullable disable
-
-namespace ClassLibrary.Models
+namespace ClassLibrary.ViewModels.ViewModel
 {
-    public partial class ApplicationUser
+    public class UserVM
     {
-        public ApplicationUser()
-        {
-            ToDos = new HashSet<ToDo>();
-        }
-        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public bool IsAdmin { get; set; }
-        public bool Archived { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
+        public string Image { get; set; }
         public string ImageString { get; set; }
-        public virtual ICollection<ToDo> ToDos { get; set; }
+        [NotMapped]
+        public string FullName => $"{FirstName} {LastName}";
     }
 }
