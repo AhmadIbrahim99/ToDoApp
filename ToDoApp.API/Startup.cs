@@ -8,10 +8,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApplication5.Extenstions;
 
 namespace ToDoApp.API
 {
@@ -28,6 +31,7 @@ namespace ToDoApp.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ToDoDBContext>();
+            services.AddLogging();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -44,6 +48,17 @@ namespace ToDoApp.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ToDoApp.API v1"));
             }
+
+            #region LoggerConfiguration
+            Log.Logger = new LoggerConfiguration()
+                    .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", LogEventLevel.Warning)
+                    .WriteTo.File("Logs/log.txt", rollingInterval: RollingInterval.Day)
+                    .CreateLogger();
+            #endregion
+
+            #region ConfigureExceptionHandler
+            app.ConfigureExceptionHandler(Log.Logger, env, typeof(Startup).Namespace);
+            #endregion
 
             app.UseHttpsRedirection();
 
