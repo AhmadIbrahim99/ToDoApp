@@ -14,7 +14,7 @@ namespace ClassLibrary.Models
         public bool IsRead { get; set; }
         public bool Archived { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; } = DateTime.Now;
         public DateTime? DeletedAt { get; set; }
         public int UserIdTask { get; set; }
         public int UserId { get; set; }

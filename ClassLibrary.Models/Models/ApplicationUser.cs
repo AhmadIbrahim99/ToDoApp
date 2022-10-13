@@ -19,7 +19,7 @@ namespace ClassLibrary.Models
         public bool IsAdmin { get; set; }
         public bool Archived { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; } = DateTime.Now;
         public DateTime? DeletedAt { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
