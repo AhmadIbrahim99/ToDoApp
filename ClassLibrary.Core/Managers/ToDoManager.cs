@@ -51,7 +51,11 @@ namespace ClassLibrary.Core.Managers
             return _map.Map<ToDoVM>(data);
         }
 
-        public ToDoResponse GetToDos(int page = 1, int pageSize = 10, string searchText = "", string sortColumn = "", string sortDirection = "ascending")
+        public ToDoResponse GetToDos(int page = 1, 
+                                     int pageSize = 10, 
+                                     string searchText = "", 
+                                     string sortColumn = "", 
+                                     string sortDirection = "ascending")
         {
             _context.IgnoreFilter = true;
             var queryRes = _context.ToDos
@@ -91,7 +95,12 @@ namespace ClassLibrary.Core.Managers
             return data;
         }
 
-        public ToDoResponse GetToDos(ApplicationUser currentUser, int page = 1, int pageSize = 10, string searchText = "", string sortColumn = "", string sortDirection = "ascending")
+        public ToDoResponse GetToDos(ApplicationUser currentUser, 
+                                     int page = 1, 
+                                     int pageSize = 10, 
+                                     string searchText = "", 
+                                     string sortColumn = "", 
+                                     string sortDirection = "ascending")
         {
             var queryRes = _context.ToDos
                 .Where(a => string.IsNullOrWhiteSpace(searchText)
