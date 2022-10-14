@@ -30,35 +30,43 @@ namespace ClassLibrary.Core.Managers
         public void DeleteUser(int id, ApplicationUser currentUserFromRequest)
         {
             var currentUser = _map.Map<UserVM>(currentUserFromRequest);
-            if (id == currentUserFromRequest.Id) throw new AhmadException("Are You Trying to deleter ur self?!!");
+            if (id == currentUserFromRequest.Id) 
+                throw new AhmadException("Are You Trying to deleter ur self?!!");
 
-            var user = _context.ApplicationUsers.FirstOrDefault(a => a.Id == id) ?? throw new AhmadException(405, "User Not Found");
+            var user = _context.ApplicationUsers.FirstOrDefault(a => a.Id == id) 
+                ?? throw new AhmadException(405, "User Not Found");
 
             user.Archived = true;
             user.DeletedAt = DateTime.Now;
             _context.SaveChanges();
         }
 
-        public List<UserVM> GetAll() => _map.Map<List<UserVM>>(_context.ApplicationUsers.ToList());
+        public List<UserVM> GetAll() => 
+            _map.Map<List<UserVM>>(_context.ApplicationUsers.ToList());
 
         public LogedInResponseVM Login(LogInVM userLogin)
         {
             var user = _context.ApplicationUsers.FirstOrDefault
-                (a => a.Email.ToLower().Equals(userLogin.Email.ToLower())) ?? throw new AhmadException(305, "Invalid User");
+                (a => a.Email.ToLower().Equals(userLogin.Email.ToLower())) ?? 
+                throw new AhmadException(305, "Invalid User");
 
             if (user == null || !VerfyPassword(userLogin.Passwod, user.Password))
                 throw new AhmadException(305, "Invalid Passwod or user");
 
 
 
-            return new LogedInResponseVM { Token = $"Bearer {GenerateJWTToken(user)}", Result = _map.Map<UserVM>(user) };
+            return new LogedInResponseVM { Token = $"Bearer {GenerateJWTToken(user)}", 
+                Result = _map.Map<UserVM>(user) };
         }
 
         public LogedInResponseVM Register(RegisterVM userRegister)
         {
-            if (_context.ApplicationUsers.Any(a => a.Email.ToLower().Equals(userRegister.Email.ToLower()))) throw new AhmadException("User Already Exist");
+            if (_context.ApplicationUsers.Any(a => a.Email.ToLower().
+            Equals(userRegister.Email.ToLower()))) 
+                throw new AhmadException("User Already Exist");
 
-            if (userRegister.Password != userRegister.ConfirmPassword) throw new AhmadException("Wrong Password");
+            if (userRegister.Password != userRegister.ConfirmPassword) 
+                throw new AhmadException("Wrong Password");
 
             var hashPassword = HashPassword(userRegister.Password);
             var data = _context.Add(new ApplicationUser
@@ -71,7 +79,8 @@ namespace ClassLibrary.Core.Managers
             _context.SaveChanges();
 
 
-            return new LogedInResponseVM { Token = $"Bearer {GenerateJWTToken(data)}", Result = _map.Map<UserVM>(data) };
+            return new LogedInResponseVM { Token = $"Bearer {GenerateJWTToken(data)}", 
+                Result = _map.Map<UserVM>(data) };
         }
 
         public byte[] Retrive(string fileName)
@@ -87,11 +96,13 @@ namespace ClassLibrary.Core.Managers
             var user = _context.ApplicationUsers.FirstOrDefault(x => x.Id == currentUser.Id)
                 ?? throw new AhmadException(400, "User Not Found");
             var url = "";
-            if (!string.IsNullOrWhiteSpace(request.Image)) url = FileHelper.SaveImage(request.Image, "profileimage1");
+            if (!string.IsNullOrWhiteSpace(request.Image)) url = FileHelper.
+                    SaveImage(request.Image, "profileimage1");
 
             var baseUrl = "https://localhost:44322/";
 
-            if (!string.IsNullOrWhiteSpace(url)) user.ImageString = @$"{baseUrl}/api/v1/user/filretrive/profilepic?filename={url}";
+            if (!string.IsNullOrWhiteSpace(url)) 
+                user.ImageString = @$"{baseUrl}/api/v1/user/filretrive/profilepic?filename={url}";
 
             _context.SaveChanges();
 

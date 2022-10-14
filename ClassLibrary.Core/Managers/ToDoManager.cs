@@ -24,9 +24,8 @@ namespace ClassLibrary.Core.Managers
             _map = mapper;
         }
 
-        public void ArchiveToDo(ApplicationUser user, int id)
+        public void ArchiveToDo(ApplicationUser currentUser, int id)
         {
-            UserVM currentUser = _map.Map<UserVM>(user);
             if (!currentUser.IsAdmin) throw new UnauthorizedResultException(401, "You have no permission to delete an ToDo!");
             var data = _context.ToDos.FirstOrDefault(b => b.Id == id)
                 ?? throw new AhmadException(403, "Invalid ToDo id received");
@@ -42,14 +41,14 @@ namespace ClassLibrary.Core.Managers
 
         public ToDoVM GetToDo(ApplicationUser currentUser,int id)
         {
-          var data =  _map.Map<ToDoVM>(_context.ToDos.
-                 Include("User")// ==  a=>a.User
+          var data =  _context.ToDos.
+                 Include("User")
                  .FirstOrDefault(b => b.Id == id && currentUser.Id == b.UserIdTask) ??
-                 throw new AhmadException(403, "Invalid Task"));
+                 throw new AhmadException(403, "Invalid Task");
 
             data.IsRead = true;
             _context.SaveChanges();
-            return data;
+            return _map.Map<ToDoVM>(data);
         }
 
         public ToDoResponse GetToDos(int page = 1, int pageSize = 10, string searchText = "", string sortColumn = "", string sortDirection = "ascending")
@@ -59,7 +58,6 @@ namespace ClassLibrary.Core.Managers
                 .Where(a => string.IsNullOrWhiteSpace(searchText)
                 || (a.Title.Contains(searchText) ||
                 a.ContentToDo.Contains(searchText)));
-
 
             if (!string.IsNullOrWhiteSpace(sortColumn) && sortDirection.ToLower().Equals("ascending"))
             {

@@ -17,16 +17,20 @@ namespace ToDoApp.API.Controllers
 
         [HttpGet("GetAll")]
         [MyAuthorization("Admin")]
-        public IActionResult Get() => Ok(LoggedInUser) ?? Ok(_userManager.GetAll());
+        public IActionResult Get() => 
+            Ok(LoggedInUser) ?? Ok(_userManager.GetAll());
 
         [HttpPost("Register")]
-        public IActionResult Post([FromBody] RegisterVM userRegister) => Ok(_userManager.Register(userRegister));
+        public IActionResult Post([FromBody] RegisterVM userRegister) => 
+            Ok(_userManager.Register(userRegister));
 
         [HttpPost("Login")]
-        public IActionResult Login([FromBody] LogInVM userLogin) => Ok(_userManager.Login(userLogin));
+        public IActionResult Login([FromBody] LogInVM userLogin) => 
+            Ok(_userManager.Login(userLogin));
 
         [HttpGet("fileretrive/profilepic")]
-        public IActionResult Retrive(string fileName) => File(_userManager.Retrive(fileName), "iamge/jpeg", fileName);
+        public IActionResult Retrive(string fileName) => 
+            File(_userManager.Retrive(fileName), "iamge/jpeg", fileName);
 
         [HttpDelete("Delete/User")]
         [MyAuthorization("Admin")]
@@ -38,7 +42,8 @@ namespace ToDoApp.API.Controllers
 
         [HttpPut("Update")]
         [Authorize]
-        public IActionResult Update([FromBody] UserVM request) => Ok(_userManager.Update(request, LoggedInUser));
+        public IActionResult Update([FromBody] UserVM request) => 
+            Ok(_userManager.Update(request, LoggedInUser));
 
 
     }
