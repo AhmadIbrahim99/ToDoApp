@@ -35,15 +35,21 @@ namespace ClassLibrary.Core.Managers
             _context.SaveChanges();
         }
 
-        public ToDoVM GetToDo(int id)
-        {
-            var data = _context.ToDos.
+        public ToDoVM GetToDo(int id)=>_map.Map<ToDoVM>(_context.ToDos.
                  Include("User")// ==  a=>a.User
                  .FirstOrDefault(b => b.Id == id) ??
-                 throw new AhmadException(403, "Invalid ToDo id received");
+                 throw new AhmadException(403, "Invalid ToDo id received"));
+
+        public ToDoVM GetToDo(ApplicationUser currentUser,int id)
+        {
+          var data =  _map.Map<ToDoVM>(_context.ToDos.
+                 Include("User")// ==  a=>a.User
+                 .FirstOrDefault(b => b.Id == id && currentUser.Id == b.UserIdTask) ??
+                 throw new AhmadException(403, "Invalid Task"));
+
             data.IsRead = true;
             _context.SaveChanges();
-            return _map.Map<ToDoVM>(data);
+            return data;
         }
 
         public ToDoResponse GetToDos(int page = 1, int pageSize = 10, string searchText = "", string sortColumn = "", string sortDirection = "ascending")
