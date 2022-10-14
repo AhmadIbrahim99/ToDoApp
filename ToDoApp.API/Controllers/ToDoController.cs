@@ -26,6 +26,7 @@ namespace ToDoApp.API.Controllers
         public IActionResult GetToDo(int id) => Ok(_manager.GetToDo(id));
 
         [HttpGet("api/UserTask/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult GetToDo(bool user, int id) => Ok(_manager.GetToDo(LoggedInUser,id));
 
         [HttpPut("api/todo")]
