@@ -48,6 +48,7 @@ namespace ClassLibrary.Core.Managers
 
         public ToDoResponse GetToDos(int page = 1, int pageSize = 10, string searchText = "", string sortColumn = "", string sortDirection = "ascending")
         {
+            _context.IgnoreFilter = true;
             var queryRes = _context.ToDos
                 .Where(a => string.IsNullOrWhiteSpace(searchText)
                 || (a.Title.Contains(searchText) ||
@@ -70,7 +71,48 @@ namespace ClassLibrary.Core.Managers
                 .Distinct()
                 .ToList();
 
-            var users = _context.ToDos
+            var users = _context.ApplicationUsers
+                .Where(a => userids.Contains(a.Id))
+                .ToDictionary(a => a.Id, x => _map.Map<UserVM>(x));
+
+            var data = new ToDoResponse
+            {
+                ToDoVM = _map.Map<PagedResult<ToDoVM>>(res),
+                User = users
+            };
+            data.ToDoVM.Sortable.Add("Title", "Title");
+            data.ToDoVM.Sortable.Add("ContentToDo", "Content ToDo");
+            data.ToDoVM.Sortable.Add("CreatedAt", "Created Date");
+            data.ToDoVM.Sortable.Add("Id", "Id");
+            return data;
+        }
+
+        public ToDoResponse GetToDos(ApplicationUser currentUser, int page = 1, int pageSize = 10, string searchText = "", string sortColumn = "", string sortDirection = "ascending")
+        {
+            var queryRes = _context.ToDos
+                .Where(a => string.IsNullOrWhiteSpace(searchText)
+                || (a.Title.Contains(searchText) ||
+                a.ContentToDo.Contains(searchText))).
+                Where(e => e.UserIdTask == currentUser.Id);
+
+
+            if (!string.IsNullOrWhiteSpace(sortColumn) && sortDirection.ToLower().Equals("ascending"))
+            {
+                queryRes = queryRes.OrderBy(sortColumn);
+            }
+            else if (!string.IsNullOrWhiteSpace(sortColumn) && sortDirection.ToLower().Equals("descending"))
+            {
+                queryRes = queryRes.OrderByDescending(sortColumn);
+            }
+
+            var res = queryRes.GetPaged(page, pageSize);
+
+            var userids = res.Data
+                .Select(a => a.UserId)
+                .Distinct()
+                .ToList();
+
+            var users = _context.ApplicationUsers
                 .Where(a => userids.Contains(a.Id))
                 .ToDictionary(a => a.Id, x => _map.Map<UserVM>(x));
 

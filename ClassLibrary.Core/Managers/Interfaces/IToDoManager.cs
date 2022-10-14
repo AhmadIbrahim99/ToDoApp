@@ -13,6 +13,7 @@ namespace ClassLibrary.Core.Managers.Interfaces
     public interface IToDoManager : IManager
     {
         ToDoResponse GetToDos(int page = 1, int pageSize = 10, string searchText = "", string sortColumn = "", string sortDirection = "ascending");
+        ToDoResponse GetToDos(ApplicationUser currentUser,int page = 1, int pageSize = 10, string searchText = "", string sortColumn = "", string sortDirection = "ascending");
         ToDoVM GetToDo(int id);
         ToDoVM PutToDo(ApplicationUser user, ToDoRequest toDoRequest);
         void ArchiveToDo(ApplicationUser user, int id);
