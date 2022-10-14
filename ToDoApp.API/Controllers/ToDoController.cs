@@ -16,14 +16,20 @@ namespace ToDoApp.API.Controllers
         }
 
         [HttpGet("api/todos")]
-        public IActionResult GetAll(int page = 1, int pageSize = 10, string searchText = "", 
-            string sortColumn = "", string sortDirection = "ascending") => 
+        public IActionResult GetAll(int page = 1, 
+                                    int pageSize = 10, 
+                                    string searchText = "", 
+                                    string sortColumn = "", 
+                                    string sortDirection = "ascending") => 
             Ok(_manager.GetToDos(page, pageSize, searchText, sortColumn, sortDirection));
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("api/Tasks")]
-        public IActionResult GetAll(bool user,int page = 1, int pageSize = 10, 
-            string searchText = "", string sortColumn = "", string sortDirection = "ascending") 
+        public IActionResult GetAll(bool user,
+                                    int page = 1, int pageSize = 10, 
+                                    string searchText = "", 
+                                    string sortColumn = "", 
+                                    string sortDirection = "ascending") 
             => Ok(_manager.
                 GetToDos(LoggedInUser,page, pageSize, searchText, sortColumn, sortDirection));
 
